@@ -1,10 +1,18 @@
+/* import { ConfigModule } from '@nestjs/config'; */
+/* import { ConfigService } from '@nestjs/config/dist'; */
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TaskModule } from './task/task.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    /*     ConfigModule.forRoot({ isGlobal: true }), */
+    TaskModule,
+    MongooseModule.forRoot(process.env.DATABASE_URL),
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
