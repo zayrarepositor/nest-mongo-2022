@@ -4,7 +4,7 @@ Tasks Project
 
 ## Description
 
-💻 Nest + Typescript + Mongo
+💻 Nest + Typescript + Mongoose + Mongo + Passport
 
 ## Installation
 
@@ -40,7 +40,10 @@ $ npm run test:cov
 
 ## Dependencies
 
-npm : class-validator, class-transformer, @nestjs/config, @nestjs/mongoose, mongoose
+npm : class-validator, class-transformer, @nestjs/config, @nestjs/mongoose, mongoose, @nestjs/passport passport, argon2, @nestjs/jwt, passport-jwt
+
+#devdependencies
+npm: @types/passport-jwt
 
 ## Stay in touch
 

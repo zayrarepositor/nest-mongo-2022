@@ -1,37 +1,61 @@
-import { Body, Controller, Get, Post, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Param,
+  Patch,
+  HttpCode,
+  Delete,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+
+import { JwtGuard } from '../auth/guard';
+
 import { TaskService } from './task.service';
-import { TaskDto } from './dto';
+
+import { ReadTaskDto, CreateTaskDto, UpdateTaskDto } from './dto';
+
+import { User as RequestUser } from '../auth/decorator';
 
 @Controller('tasks')
 export class TaskController {
-  constructor(private taskService: TaskService) {}
+  constructor(private readonly taskService: TaskService) {}
+
+  @UseGuards(JwtGuard)
+  @Post()
+  create(
+    @Body() createTaskDto: CreateTaskDto,
+    @RequestUser('id') userId: string,
+  ): Promise<ReadTaskDto> {
+    console.log(userId);
+    return this.taskService.create(createTaskDto);
+  }
 
   @Get()
-  getTasks(): Promise<TaskDto[]> {
-    return this.taskService.getTasks();
+  findAll(@Query() filterQuery: object): Promise<ReadTaskDto[]> {
+    return this.taskService.findAll(filterQuery);
   }
 
   @Get(':id')
-  getTaskById(@Param('id') taskId: string): Promise<TaskDto> {
-    return this.taskService.getTaskById(taskId);
+  findOne(@Param('id') id: string): Promise<ReadTaskDto> {
+    return this.taskService.findOne(id);
   }
 
-  @Post()
-  createTask(@Body() task: TaskDto): Promise<TaskDto> {
-    return this.taskService.createTask(task);
+  @UseGuards(JwtGuard)
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+  ): Promise<ReadTaskDto> {
+    return this.taskService.update(id, updateTaskDto);
   }
 
-  /*   @Put()
-  updateTask(
-    @Body() task: CreateTaskDto,
-    @Param('id', ParseIntPipe) taskId: number,
-  ): string {
-    return this.taskService.updateTask(task, taskId);
-  }
-
+  @UseGuards(JwtGuard)
   @HttpCode(204)
   @Delete(':id')
-  deleteTask(@Param('id', ParseIntPipe) taskId: number): string {
-    return this.taskService.deleteTask(taskId);
-  } */
+  async remove(@Param('id') id: string): Promise<string> {
+    return await this.taskService.remove(id);
+  }
 }

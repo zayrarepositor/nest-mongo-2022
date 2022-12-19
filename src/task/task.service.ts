@@ -1,30 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { TaskDto } from './dto';
+import { Injectable, Inject } from '@nestjs/common';
+
+import { ReadTaskDto, CreateTaskDto, UpdateTaskDto } from './dto';
+
+import { taskRepository } from './repository';
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel('Task') private taskModel: Model<TaskDto>) {}
+  constructor(@Inject(taskRepository) private readonly TaskRepository) {}
 
-  async getTasks(): Promise<TaskDto[]> {
-    return await this.taskModel.find();
+  async create(createTaskDto: CreateTaskDto): Promise<ReadTaskDto> {
+    return await this.TaskRepository.create(createTaskDto);
   }
 
-  async getTaskById(taskId: string): Promise<TaskDto> {
-    return await this.taskModel.findById(taskId);
+  async findAll(filterQuery: object): Promise<ReadTaskDto[]> {
+    return await this.TaskRepository.findAll(filterQuery);
   }
 
-  async createTask(task: TaskDto): Promise<TaskDto> {
-    const newTask = new this.taskModel(task);
-    return await newTask.save();
+  async findOne(id: string): Promise<ReadTaskDto> {
+    return await this.TaskRepository.findOne(id);
   }
 
-  /*   updateTask(task: CreateTaskDto, taskId: number): string {
-    return `task ${taskId} updated`;
+  async update(id: string, updateTaskDto: UpdateTaskDto): Promise<ReadTaskDto> {
+    return await this.TaskRepository.update(id, updateTaskDto);
   }
 
-  deleteTask(taskId: number): string {
-    return 'task deleted';
-  } */
+  async remove(id: string): Promise<string> {
+    return await this.TaskRepository.remove(id);
+  }
 }
