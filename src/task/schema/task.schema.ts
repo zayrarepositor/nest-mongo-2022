@@ -32,5 +32,10 @@ export class Task {
 export const TaskSchema = SchemaFactory.createForClass(Task);
 
 export type TaskDocument = Task & Document;
+/*
+import { HydratedDocument } from 'mongoose';
+
+export type TaskDocument = HydratedDocument<Task>;
+*/
 
 export type TaskModel = Model<Task>;

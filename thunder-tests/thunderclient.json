@@ -119,12 +119,12 @@
     "method": "POST",
     "sortNum": 10000,
     "created": "2022-12-15T16:40:01.147Z",
-    "modified": "2022-12-19T03:31:46.017Z",
+    "modified": "2022-12-19T05:41:55.622Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\": \"user 1\",\n  \"age\": 40,\n  \"email\": \"user1@mail.com\",\n  \"password\": \"user1Password*\",\n  \"avatar\": \"http://user-image.jpg\"\n}",
+      "raw": "{\n  \"name\": \"user 2\",\n  \"age\": 40,\n  \"email\": \"user2@mail.com\",\n  \"password\": \"user2Password*\",\n  \"avatar\": \"http://user-image.jpg\"\n}",
       "form": []
     },
     "tests": []
