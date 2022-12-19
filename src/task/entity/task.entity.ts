@@ -9,5 +9,5 @@ export class Task {
 
   wrote: Date;
 
-  author: object[];
+  author: object;
 }

@@ -24,7 +24,7 @@ export class MongoUserRepository implements UserRepository {
     if (users.length === 0) throw new NotFoundException('users not found');
 
     const usersToGoOut = users.map((user) => {
-      return this.getReadyToGoOut(user);
+      return this.cleaner(user);
     });
 
     return usersToGoOut;
@@ -35,7 +35,7 @@ export class MongoUserRepository implements UserRepository {
 
     if (!user) throw new NotFoundException('task not found');
 
-    return this.getReadyToGoOut(user);
+    return this.cleaner(user);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -45,7 +45,7 @@ export class MongoUserRepository implements UserRepository {
       { new: true },
     );
     if (!user) throw new NotFoundException('user not found');
-    return this.getReadyToGoOut(user);
+    return this.cleaner(user);
   }
 
   async remove(id: string): Promise<string> {
@@ -56,13 +56,12 @@ export class MongoUserRepository implements UserRepository {
     return `user id: ${id} deleted`;
   }
 
-  getReadyToGoOut(rawUser: LeanDocument<UserDocument>): User {
+  cleaner(rawUser: LeanDocument<UserDocument>): User {
     const user = new User();
     user.id = rawUser.id;
     user.name = rawUser.name;
     user.age = rawUser.age;
     user.email = rawUser.email;
-    user.password = rawUser.password;
     user.isActive = rawUser.isActive;
     user.isAdmin = rawUser.isAdmin;
     user.avatar = rawUser.avatar;

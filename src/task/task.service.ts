@@ -8,8 +8,11 @@ import { taskRepository } from './repository';
 export class TaskService {
   constructor(@Inject(taskRepository) private readonly TaskRepository) {}
 
-  async create(createTaskDto: CreateTaskDto): Promise<ReadTaskDto> {
-    return await this.TaskRepository.create(createTaskDto);
+  async create(
+    createTaskDto: CreateTaskDto,
+    userId: string,
+  ): Promise<ReadTaskDto> {
+    return await this.TaskRepository.create(createTaskDto, userId);
   }
 
   async findAll(filterQuery: object): Promise<ReadTaskDto[]> {

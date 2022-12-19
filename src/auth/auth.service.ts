@@ -1,6 +1,11 @@
 import { ConfigService } from '@nestjs/config/dist';
 
-import { Injectable, Inject, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { SignupDto, SigninDto } from './dto';
 
@@ -32,7 +37,7 @@ export class AuthService {
   async signin(signinDto: SigninDto): Promise<{ user: object; token: string }> {
     const user = await this.AuthRepository.signin(signinDto);
     //this validation here??
-    if (!user) throw new ForbiddenException('User not found');
+    if (!user) throw new NotFoundException('User not found');
 
     const passwordMatcher = await argon.verify(
       user.password,
