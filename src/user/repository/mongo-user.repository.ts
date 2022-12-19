@@ -53,7 +53,7 @@ export class MongoUserRepository implements UserRepository {
 
     if (user.deletedCount === 0) throw new NotFoundException('user not found');
 
-    return 'user deleted';
+    return `user id: ${id} deleted`;
   }
 
   getReadyToGoOut(rawUser: LeanDocument<UserDocument>): User {
