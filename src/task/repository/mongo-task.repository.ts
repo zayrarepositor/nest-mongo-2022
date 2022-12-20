@@ -7,7 +7,7 @@ import {
 
 import { InjectModel } from '@nestjs/mongoose';
 
-import { LeanDocument } from 'mongoose';
+import { LeanDocument, ObjectId } from 'mongoose';
 
 import { TaskRepository } from './task.repository';
 
@@ -17,7 +17,7 @@ import { Task } from '../entity';
 
 import { TaskDocument, TaskModel } from '../schema';
 
-import { formatter } from 'src/helpers';
+import { formatter } from '../../helpers';
 
 import { UserModel } from '../../user/schema';
 
@@ -31,7 +31,7 @@ export class MongoTaskRepository implements TaskRepository {
   async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
     try {
       const task = new this.taskModel({ author: userId, ...createTaskDto });
-
+      console.log('TASK MODEL', task);
       await task.save();
 
       await this.updateNewTaskIntoUser(userId, task.id);
@@ -99,19 +99,14 @@ export class MongoTaskRepository implements TaskRepository {
 
   async updateNewTaskIntoUser(
     userId: string,
-    taskId: string,
+    taskId: ObjectId,
   ): Promise<boolean> {
     try {
-      await this.userModel.findByIdAndUpdate(
-        userId,
-        {
-          $set: { tasks: taskId },
-        },
-        {
-          upsert: true,
-          new: true,
-        },
-      );
+      const user = await this.userModel.findById(userId);
+
+      user.tasks.push(taskId);
+
+      await user.save();
     } catch (error) {
       throw new ForbiddenException(error._message);
     }

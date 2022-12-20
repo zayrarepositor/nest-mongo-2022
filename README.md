@@ -15,10 +15,10 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm run start
+# test mode server
+$ npm run start:test
 
-# watch mode
+# dev mode server
 $ npm run start:dev
 
 # production mode
@@ -40,9 +40,10 @@ $ npm run test:cov
 
 ## Dependencies
 
-npm : class-validator, class-transformer, @nestjs/config, @nestjs/mongoose, mongoose, @nestjs/passport passport, argon2, @nestjs/jwt, passport-jwt
+npm : class-validator, class-transformer, @nestjs/config, @nestjs/mongoose, mongoose, @nestjs/passport passport, argon2, @nestjs/jwt, passport-jwt, pactum, dotenv-cli
 
-#devdependencies
+devdependencies:
+
 npm: @types/passport-jwt
 
 ## Stay in touch

@@ -2,9 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 import * as mongoose from 'mongoose';
 
-import { Document, Model } from 'mongoose';
-
-import { User } from '../../user/schema';
+import { Document, Model, ObjectId } from 'mongoose';
 
 @Schema()
 export class Task {
@@ -26,7 +24,7 @@ export class Task {
   wrote: Date;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  author: User;
+  author: ObjectId;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

@@ -29,6 +29,7 @@ export class TaskController {
     @Body() createTaskDto: CreateTaskDto,
     @RequestUser('id') userId: string,
   ): Promise<ReadTaskDto> {
+    console.log('REQUEST USER ID', userId);
     return this.taskService.create(createTaskDto, userId);
   }
 

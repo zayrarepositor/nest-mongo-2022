@@ -14,7 +14,7 @@ import { SignupDto, SigninDto } from '../dto';
 
 import { ForbiddenException } from '@nestjs/common/exceptions';
 
-import { formatter } from 'src/helpers';
+import { formatter } from '../../helpers';
 
 @Injectable()
 export class MongoAuthRepository implements AuthRepository {
@@ -52,6 +52,7 @@ export class MongoAuthRepository implements AuthRepository {
     user.isActive = rawUser.isActive;
     user.isAdmin = rawUser.isAdmin;
     user.avatar = rawUser.avatar;
+
     return user;
   }
 
