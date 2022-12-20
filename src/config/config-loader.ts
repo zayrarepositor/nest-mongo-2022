@@ -1,8 +1,10 @@
-export const configLoadeer = () => {
+import { env } from 'process';
+
+export const configLoader = () => {
   return {
-    port: process.env.PORT,
-    database: { uri: process.env.DATABASE_URL },
-    apiKey: process.env.API_KEY,
-    jwtSecret: process.env.JWT_SECRET,
+    port: env.PORT,
+    database: { uri: env.DATABASE_URL },
+    apiKey: env.API_KEY,
+    jwtSecret: env.JWT_SECRET,
   };
 };

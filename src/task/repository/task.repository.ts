@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongoose';
 import { CreateTaskDto, UpdateTaskDto } from '../dto';
 
 import { Task } from '../entity';

@@ -7,7 +7,7 @@ import {
 
 import { InjectModel } from '@nestjs/mongoose';
 
-import { LeanDocument } from 'mongoose';
+import { LeanDocument, ObjectId } from 'mongoose';
 
 import { TaskRepository } from './task.repository';
 
@@ -17,17 +17,24 @@ import { Task } from '../entity';
 
 import { TaskDocument, TaskModel } from '../schema';
 
-import { formatter } from 'src/helpers';
+import { formatter } from '../../helpers';
+
+import { UserModel } from '../../user/schema';
 
 @Injectable()
 export class MongoTaskRepository implements TaskRepository {
-  constructor(@InjectModel('Task') private readonly taskModel: TaskModel) {}
+  constructor(
+    @InjectModel('Task') private readonly taskModel: TaskModel,
+    @InjectModel('User') private readonly userModel: UserModel,
+  ) {}
 
   async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
     try {
-      const task = new this.taskModel(createTaskDto);
-      console.log('USERID', userId);
+      const task = new this.taskModel({ author: userId, ...createTaskDto });
+      console.log('TASK MODEL', task);
       await task.save();
+
+      await this.updateNewTaskIntoUser(userId, task.id);
 
       return this.cleaner(task);
     } catch (error) {
@@ -79,10 +86,30 @@ export class MongoTaskRepository implements TaskRepository {
 
   cleaner(rawTask: LeanDocument<TaskDocument>): Task {
     const task = new Task();
+
     task.id = rawTask.id;
     task.title = rawTask.title;
     task.description = rawTask.description;
     task.done = rawTask.done;
+    task.wrote = rawTask.wrote;
+    task.author = rawTask.author;
+
     return task;
+  }
+
+  async updateNewTaskIntoUser(
+    userId: string,
+    taskId: ObjectId,
+  ): Promise<boolean> {
+    try {
+      const user = await this.userModel.findById(userId);
+
+      user.tasks.push(taskId);
+
+      await user.save();
+    } catch (error) {
+      throw new ForbiddenException(error._message);
+    }
+    return true;
   }
 }

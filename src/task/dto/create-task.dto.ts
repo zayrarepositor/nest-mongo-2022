@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+/* import { Expose } from 'class-transformer'; */
 import {
   IsString,
   IsNotEmpty,
@@ -24,7 +24,7 @@ export class CreateTaskDto {
   @IsBoolean()
   readonly done: boolean;
 
-  @Expose({ name: 'wroteAt' })
+  /*  @Expose({ name: 'wroteAt' }) */
   @IsOptional()
   @IsDate()
   readonly wrote: Date;
